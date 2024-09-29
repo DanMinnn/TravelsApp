@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Travel</string>
+    <string name="sign_in_title">Sign in to start planning your trip.</string>
+    <string name="sign_in_gg">Continue with google</string>
+    <string name="sign_in_email">Continue with email</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+</resources>
