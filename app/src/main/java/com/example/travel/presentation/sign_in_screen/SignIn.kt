@@ -41,13 +41,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.travel.R
+import com.example.travel.presentation.NavGraph.Route
 import com.example.travel.ui.theme.tripsansFontFamily
 import com.example.travel.ui.theme.tripsansRegularFontFamily
 
 @Composable
 fun SignIn(
-
+    navController: NavController
 ) {
 
     Column(
@@ -75,15 +77,12 @@ fun SignIn(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        var isPress by remember {
-            mutableStateOf(false)
-        }
         Button(
-            onClick = { isPress = !isPress},
-            modifier = Modifier.size(width = 300.dp, height = 48.dp).clickable {  },
+            onClick = { },
+            modifier = Modifier.size(width = 300.dp, height = 48.dp),
             border = BorderStroke(width = 1.dp, color = Color.Black),
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isPress) Color.DarkGray else Color.White,
+                containerColor = Color.White,
                 contentColor = Color.White,
             ),
             shape = RoundedCornerShape(24.dp),
@@ -111,16 +110,12 @@ fun SignIn(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        var isPressed by remember {
-            mutableStateOf(false)
-        }
-
         Button(
-            onClick = { isPressed = !isPressed },
-            modifier = Modifier.size(width = 300.dp, height = 48.dp).clickable {  },
+            onClick = { navController.navigate(Route.SignInEmailScreen.route) },
+            modifier = Modifier.size(width = 300.dp, height = 48.dp),
             border = BorderStroke(width = 1.dp, color = Color.Black),
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isPressed) Color.DarkGray else Color.White,
+                containerColor = Color.White,
                 contentColor = Color.White,
             ),
             shape = RoundedCornerShape(24.dp),
@@ -148,8 +143,9 @@ fun SignIn(
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun SignInPreview() {
-    SignIn()
-}
+    SignIn(navController = n)
+}*/

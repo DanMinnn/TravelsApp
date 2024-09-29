@@ -1,16 +1,14 @@
 package com.example.travel.presentation.sign_in_screen
 
 import android.util.Patterns
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -22,14 +20,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,18 +34,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.travel.R
 import com.example.travel.presentation.NavGraph.Route
-import com.example.travel.ui.theme.TravelTheme
+import com.example.travel.ui.theme.tripsansRegularFontFamily
 
 @Composable
-fun SignInEmail(
-    navController: NavController
+fun ForgotPassword(
+    navController : NavController
 ) {
-
     Icon(
         painterResource(id = R.drawable.back_ic),
         contentDescription = null,
         modifier = Modifier.padding(top = 50.dp, start = 20.dp).clickable {
-            navController.navigate(Route.SignIn.route)
+            navController.navigate(Route.SignInEmailScreen.route)
         }
     )
 
@@ -57,21 +53,21 @@ fun SignInEmail(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 100.dp, start = 30.dp, end = 30.dp),
+            .padding(top = 100.dp, start = 30.dp, end = 30.dp)
     ) {
+        Text(
+            text = "Enter the email address you used to sign up.",
+            fontFamily = tripsansRegularFontFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp
+        )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(22.dp))
 
         var email by remember {
             mutableStateOf("")
         }
-        var password by remember {
-            mutableStateOf("")
-        }
         var isValidEmail by remember {
-            mutableStateOf(true)
-        }
-        var isVaildPassword by remember{
             mutableStateOf(true)
         }
 
@@ -81,8 +77,7 @@ fun SignInEmail(
 
         Text(
             stringResource(id = R.string.email_address),
-            modifier = Modifier.fillMaxWidth(),
-            fontWeight = FontWeight.SemiBold
+            style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -98,18 +93,22 @@ fun SignInEmail(
                     style = TextStyle(textAlign = TextAlign.Center, fontSize = 12.sp)
                 )
             },
+            isError = !isValidEmail,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp)
+                .height(45.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        if (email.isEmpty()){
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (email.isEmpty()) {
             Text(
                 text = "Please enter a valid email address.",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.labelSmall
             )
-        }else if (!isValidEmail){
+        } else if (!isValidEmail) {
             Text(
                 text = "Invalid email format",
                 color = MaterialTheme.colorScheme.error,
@@ -119,55 +118,9 @@ fun SignInEmail(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        Text(
-            stringResource(id = R.string.password),
-            modifier = Modifier.fillMaxWidth(),
-            fontWeight = FontWeight.SemiBold
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password, onValueChange = { newValue ->
-                password = newValue
-            },
-            placeholder = {
-                Text(
-                    stringResource(id = R.string.password),
-                    style = TextStyle(textAlign = TextAlign.Center, fontSize = 12.sp)
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(45.dp)
-        )
-
-        if (password.isEmpty()){
-            Text(
-                text = "Please enter a valid password",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.labelSmall
-            )
-        }
-        Spacer(modifier = Modifier.height(14.dp))
-
-        Text(
-            stringResource(id = R.string.forgot_password),
-            color = colorResource(id = R.color.purple),
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    navController.navigate(Route.ForgotPassword.route)
-                },
-            fontWeight = FontWeight.SemiBold
-        )
-
-        Spacer(modifier = Modifier.height(22.dp))
-
         Button(
             onClick = {
                 isValidEmail = validateEmail(email)
-                isVaildPassword = true
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -176,31 +129,23 @@ fun SignInEmail(
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            enabled = isValidEmail && isVaildPassword
+            enabled = isValidEmail
         ) {
-            Text(stringResource(id = R.string.sign_in))
+            Text(text = "Send email")
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
-        Button(
-            onClick = { navController.navigate(Route.SignUp.route) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(45.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
-            border = BorderStroke(1.dp, color = Color.Black)
-        ) {
-            Text(stringResource(id = R.string.sign_up))
-        }
+        Text(
+            text = "We'll send you a password reset email",
+            style = TextStyle(fontFamily = tripsansRegularFontFamily)
+        )
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
-fun SignInEmailPreview() {
-    //SignInEmail()
-}
+fun ForgotPasswordPreview() {
+    ForgotPassword()
+}*/
