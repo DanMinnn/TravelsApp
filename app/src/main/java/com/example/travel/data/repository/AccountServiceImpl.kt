@@ -69,6 +69,15 @@ class AccountServiceImpl @Inject constructor() : AccountService {
         }
     }
 
+    override suspend fun resetPassword(email: String) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener{  task ->
+            if (task.isSuccessful)
+                Log.d("signUp", "Successful")
+            else
+                Log.d("signUp", "Failure")
+        }
+    }
+
     override suspend fun signOut() {
         Firebase.auth.signOut()
     }

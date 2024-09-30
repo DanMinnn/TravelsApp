@@ -91,6 +91,22 @@ class SignInViewModel @Inject constructor(
     }
 
     fun onSendEmailResetPassword(openAndPopUp: (String, String) -> Unit){
+        launchCatching {
+
+            if (_email.value.isEmpty()){
+                _errorMessage.value = "Please enter a valid email address."
+                return@launchCatching
+            }
+            else if (!_email.value.isValidEmail()){
+                _errorMessage.value = "Invalid email format"
+                return@launchCatching
+            }else {
+                _errorMessage.value = ""
+            }
+
+            accountService.resetPassword(_email.value)
+            openAndPopUp("", "")
+        }
 
     }
 }

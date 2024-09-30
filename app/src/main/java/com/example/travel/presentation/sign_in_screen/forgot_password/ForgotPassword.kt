@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,20 +31,29 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.travel.R
 import com.example.travel.presentation.nav_graph.Route
+import com.example.travel.presentation.sign_in_screen.SignInViewModel
 import com.example.travel.ui.theme.tripsansRegularFontFamily
 
 @Composable
 fun ForgotPassword(
-    openAndPopUp : (String, String) -> Unit
+    openAndPopUp : (String, String) -> Unit,
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
+
+    val email = viewModel.email.collectAsState()
+    val errorMessage = viewModel.errorMessage.collectAsState().value
+
     Icon(
         painterResource(id = R.drawable.back_ic),
         contentDescription = null,
-        modifier = Modifier.padding(top = 50.dp, start = 20.dp).clickable {
-            openAndPopUp(Route.SignInEmailScreen.route, Route.ForgotPassword.route)
-        }
+        modifier = Modifier
+            .padding(top = 50.dp, start = 20.dp)
+            .clickable {
+                openAndPopUp(Route.SignInEmailScreen.route, Route.ForgotPassword.route)
+            }
     )
 
     Spacer(modifier = Modifier.height(20.dp))
@@ -62,17 +72,6 @@ fun ForgotPassword(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        var email by remember {
-            mutableStateOf("")
-        }
-        var isValidEmail by remember {
-            mutableStateOf(true)
-        }
-
-        fun validateEmail(email: String): Boolean {
-            return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        }
-
         Text(
             stringResource(id = R.string.email_address),
             style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
@@ -81,9 +80,8 @@ fun ForgotPassword(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = email, onValueChange = { newValue ->
-                email = newValue
-                isValidEmail = validateEmail(newValue)
+            value = email.value, onValueChange = {
+                viewModel.updateEmail(it)
             },
             placeholder = {
                 Text(
@@ -91,7 +89,6 @@ fun ForgotPassword(
                     style = TextStyle(textAlign = TextAlign.Center, fontSize = 12.sp)
                 )
             },
-            isError = !isValidEmail,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
@@ -100,15 +97,9 @@ fun ForgotPassword(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (email.isEmpty()) {
+        if (errorMessage.isNotEmpty()) {
             Text(
-                text = "Please enter a valid email address.",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.labelSmall
-            )
-        } else if (!isValidEmail) {
-            Text(
-                text = "Invalid email format",
+                text = errorMessage,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.labelSmall
             )
@@ -118,7 +109,7 @@ fun ForgotPassword(
 
         Button(
             onClick = {
-                isValidEmail = validateEmail(email)
+                viewModel.onSendEmailResetPassword(openAndPopUp)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -127,7 +118,6 @@ fun ForgotPassword(
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            enabled = isValidEmail
         ) {
             Text(text = "Send email")
         }
@@ -140,10 +130,3 @@ fun ForgotPassword(
         )
     }
 }
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun ForgotPasswordPreview() {
-    ForgotPassword()
-}*/
