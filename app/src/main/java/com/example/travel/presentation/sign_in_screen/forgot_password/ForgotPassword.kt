@@ -1,4 +1,4 @@
-package com.example.travel.presentation.sign_in_screen
+package com.example.travel.presentation.sign_in_screen.forgot_password
 
 import android.util.Patterns
 import androidx.compose.foundation.clickable
@@ -28,23 +28,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.travel.R
-import com.example.travel.presentation.NavGraph.Route
+import com.example.travel.presentation.nav_graph.Route
 import com.example.travel.ui.theme.tripsansRegularFontFamily
 
 @Composable
 fun ForgotPassword(
-    navController : NavController
+    openAndPopUp : (String, String) -> Unit
 ) {
     Icon(
         painterResource(id = R.drawable.back_ic),
         contentDescription = null,
         modifier = Modifier.padding(top = 50.dp, start = 20.dp).clickable {
-            navController.navigate(Route.SignInEmailScreen.route)
+            openAndPopUp(Route.SignInEmailScreen.route, Route.ForgotPassword.route)
         }
     )
 
@@ -96,7 +94,7 @@ fun ForgotPassword(
             isError = !isValidEmail,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp),
+                .height(50.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 

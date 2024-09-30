@@ -5,12 +5,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -18,11 +16,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -34,22 +32,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.travel.R
-import com.example.travel.presentation.NavGraph.Route
-import com.example.travel.ui.theme.TravelTheme
+import com.example.travel.presentation.nav_graph.Route
 
 @Composable
 fun SignInEmail(
-    navController: NavController
+    openAndPopUp: (String, String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
+    val email = viewModel.email.collectAsState()
+    val password = viewModel.password.collectAsState()
 
     Icon(
         painterResource(id = R.drawable.back_ic),
         contentDescription = null,
-        modifier = Modifier.padding(top = 50.dp, start = 20.dp).clickable {
-            navController.navigate(Route.SignIn.route)
-        }
+        modifier = Modifier
+            .padding(top = 50.dp, start = 20.dp)
+            .clickable {
+                openAndPopUp(Route.SignIn.route, Route.SignInEmailScreen.route)
+            }
     )
 
     Spacer(modifier = Modifier.height(20.dp))
@@ -62,23 +65,6 @@ fun SignInEmail(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        var email by remember {
-            mutableStateOf("")
-        }
-        var password by remember {
-            mutableStateOf("")
-        }
-        var isValidEmail by remember {
-            mutableStateOf(true)
-        }
-        var isVaildPassword by remember{
-            mutableStateOf(true)
-        }
-
-        fun validateEmail(email: String): Boolean {
-            return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        }
-
         Text(
             stringResource(id = R.string.email_address),
             modifier = Modifier.fillMaxWidth(),
@@ -88,9 +74,9 @@ fun SignInEmail(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = email, onValueChange = { newValue ->
-                email = newValue
-                isValidEmail = validateEmail(newValue)
+            value = email.value, onValueChange = {
+                viewModel.updateEmail(it)
+                //isValidEmail = validateEmail(it)
             },
             placeholder = {
                 Text(
@@ -100,18 +86,14 @@ fun SignInEmail(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp)
+                .height(50.dp)
         )
 
-        if (email.isEmpty()){
+        val errorMessage = viewModel.errorMessage.collectAsState().value
+
+        if (errorMessage.isNotEmpty()){
             Text(
-                text = "Please enter a valid email address.",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.labelSmall
-            )
-        }else if (!isValidEmail){
-            Text(
-                text = "Invalid email format",
+                text = errorMessage,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.labelSmall
             )
@@ -128,8 +110,8 @@ fun SignInEmail(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = password, onValueChange = { newValue ->
-                password = newValue
+            value = password.value, onValueChange = {
+                viewModel.updatePassword(it)
             },
             placeholder = {
                 Text(
@@ -139,16 +121,19 @@ fun SignInEmail(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp)
+                .height(50.dp)
         )
 
-        if (password.isEmpty()){
+        val errorMessagePassword = viewModel.errorMessagePassword.collectAsState().value
+
+        if (errorMessagePassword.isNotEmpty()){
             Text(
-                text = "Please enter a valid password",
+                text = errorMessagePassword,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.labelSmall
             )
         }
+
         Spacer(modifier = Modifier.height(14.dp))
 
         Text(
@@ -157,7 +142,7 @@ fun SignInEmail(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    navController.navigate(Route.ForgotPassword.route)
+                    openAndPopUp(Route.ForgotPassword.route, Route.SignInEmailScreen.route)
                 },
             fontWeight = FontWeight.SemiBold
         )
@@ -166,8 +151,7 @@ fun SignInEmail(
 
         Button(
             onClick = {
-                isValidEmail = validateEmail(email)
-                isVaildPassword = true
+                viewModel.onSignInClick(openAndPopUp)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -176,7 +160,6 @@ fun SignInEmail(
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            enabled = isValidEmail && isVaildPassword
         ) {
             Text(stringResource(id = R.string.sign_in))
         }
@@ -184,7 +167,7 @@ fun SignInEmail(
         Spacer(modifier = Modifier.height(12.dp))
 
         Button(
-            onClick = { navController.navigate(Route.SignUp.route) },
+            onClick = { viewModel.onSignUpClick(openAndPopUp) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(45.dp),

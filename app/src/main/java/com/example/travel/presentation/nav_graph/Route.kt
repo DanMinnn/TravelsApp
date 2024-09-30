@@ -1,4 +1,4 @@
-package com.example.travel.presentation.NavGraph
+package com.example.travel.presentation.nav_graph
 
 sealed class Route(
     val route: String

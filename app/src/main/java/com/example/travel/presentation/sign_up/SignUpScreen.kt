@@ -1,10 +1,8 @@
-package com.example.travel.presentation.sign_in_screen
+package com.example.travel.presentation.sign_up
 
 import android.util.Patterns
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,25 +33,33 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.travel.R
-import com.example.travel.presentation.NavGraph.Route
+import com.example.travel.presentation.nav_graph.Route
 import com.example.travel.ui.theme.tripsansFontFamily
 import com.example.travel.ui.theme.tripsansRegularFontFamily
 
 @Composable
 fun SignUp(
-    navController: NavController
+    openAndPopUp: (String, String) -> Unit,
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
+
+    val email = viewModel.email.collectAsState()
+    val password = viewModel.password.collectAsState()
+    val errorMessage = viewModel.errorMessage.collectAsState().value
+    val errorMessagePassword = viewModel.errorMessagePassword.collectAsState().value
+
     Icon(
         painterResource(id = R.drawable.back_ic),
         contentDescription = null,
-        modifier = Modifier.padding(top = 50.dp, start = 20.dp).clickable {
-            navController.navigate(Route.SignInEmailScreen.route)
-        }
+        modifier = Modifier
+            .padding(top = 50.dp, start = 20.dp)
+            .clickable {
+                openAndPopUp(Route.SignInEmailScreen.route, Route.SignUp.route)
+            }
     )
 
     Spacer(modifier = Modifier.height(20.dp))
@@ -70,23 +77,6 @@ fun SignUp(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        var email by remember {
-            mutableStateOf("")
-        }
-        var isEmailValid by remember { mutableStateOf(true) }
-        var isPasswordValid by remember { mutableStateOf(true) }
-        var password by remember {
-            mutableStateOf("")
-        }
-
-        fun validateEmail(email: String): Boolean {
-            return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        }
-
-        fun validatePassword(password: String): Boolean {
-            return password.length >= 10 && password.any { it.isDigit() }
-                    && password.any({ !it.isLetterOrDigit() })
-        }
         Text(
             stringResource(id = R.string.email_address),
             style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
@@ -95,9 +85,8 @@ fun SignUp(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = email, onValueChange = { newValue ->
-                email = newValue
-                isEmailValid = validateEmail(newValue)
+            value = email.value, onValueChange = {
+                viewModel.updateEmail(it)
             },
             placeholder = {
                 Text(
@@ -105,16 +94,15 @@ fun SignUp(
                     style = TextStyle(textAlign = TextAlign.Center, fontSize = 12.sp)
                 )
             },
-            isError = !isEmailValid,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp),
+                .height(50.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        if (!isEmailValid) {
+        if (errorMessage.isNotEmpty()){
             Text(
-                text = "Please enter a valid email address.",
+                text = errorMessage,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.labelSmall
             )
@@ -124,15 +112,15 @@ fun SignUp(
 
         Text(
             stringResource(id = R.string.password),
+            fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = password, onValueChange = { newValue ->
-                password = newValue
-                isPasswordValid = validatePassword(newValue)
+            value = password.value, onValueChange = {
+                viewModel.updatePassword(it)
             },
             placeholder = {
                 Text(
@@ -140,10 +128,9 @@ fun SignUp(
                     style = TextStyle(textAlign = TextAlign.Center, fontSize = 12.sp)
                 )
             },
-            isError = !isPasswordValid,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp)
+                .height(50.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -161,7 +148,7 @@ fun SignUp(
             Text(
                 text = "At least 10 characters",
                 style = TextStyle(
-                    color = if (isPasswordValid) colorResource(id = R.color.condition) else MaterialTheme.colorScheme.error,
+                    color = if (errorMessagePassword.isEmpty()) colorResource(id = R.color.condition) else MaterialTheme.colorScheme.error,
                     textAlign = TextAlign.Center,
                     fontFamily = tripsansRegularFontFamily
                 )
@@ -181,7 +168,7 @@ fun SignUp(
             Text(
                 text = "Contains a special character",
                 style = TextStyle(
-                    color = if (isPasswordValid) colorResource(id = R.color.condition) else MaterialTheme.colorScheme.error,
+                    color = if (errorMessagePassword.isEmpty()) colorResource(id = R.color.condition) else MaterialTheme.colorScheme.error,
                     fontFamily = tripsansRegularFontFamily
                 )
             )
@@ -191,11 +178,7 @@ fun SignUp(
 
         Button(
             onClick = {
-                isEmailValid = validateEmail(email)
-                isPasswordValid = validatePassword(password)
-                if (isEmailValid && isPasswordValid) {
-
-                }
+               viewModel.onSignUpClick(openAndPopUp)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -204,7 +187,6 @@ fun SignUp(
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            enabled = isEmailValid && isPasswordValid
         ) {
             Text(stringResource(id = R.string.sign_up))
         }
@@ -212,7 +194,9 @@ fun SignUp(
         Spacer(modifier = Modifier.height(12.dp))
 
         Button(
-            onClick = { navController.navigate(Route.SignInEmailScreen.route) },
+            onClick = {
+                openAndPopUp(Route.SignInEmailScreen.route, Route.SignUp.route)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(45.dp),
@@ -227,10 +211,3 @@ fun SignUp(
         }
     }
 }
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun SignUpPreview() {
-    SignUp()
-}*/

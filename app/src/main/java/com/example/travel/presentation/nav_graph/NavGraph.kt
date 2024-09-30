@@ -1,15 +1,6 @@
-package com.example.travel.presentation.NavGraph
+package com.example.travel.presentation.nav_graph
 
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraph
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.travel.presentation.sign_in_screen.ForgotPassword
-import com.example.travel.presentation.sign_in_screen.SignIn
-import com.example.travel.presentation.sign_in_screen.SignInEmail
-import com.example.travel.presentation.sign_in_screen.SignUp
-
+/*
 @Composable
 fun NavGraph(){
     val navController = rememberNavController()
@@ -28,4 +19,4 @@ fun NavGraph(){
             ForgotPassword(navController)
         }
     })
-}
+}*/
