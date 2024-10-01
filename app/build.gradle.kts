@@ -130,4 +130,7 @@ dependencies {
     implementation ("androidx.credentials:credentials-play-services-auth:1.2.2")
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
+    //Live data
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.2")
+
 }

@@ -3,9 +3,10 @@ package com.example.travel
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.travel.data.manager.AuthPreferences
 
 @Stable
-class TravelsAppState(val navController: NavHostController) {
+class TravelsAppState(val navController: NavHostController, val authPreferences: AuthPreferences) {
 
     fun popUp(){
         navController.popBackStack()
