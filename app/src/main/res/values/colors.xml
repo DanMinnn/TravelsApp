@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#784bb1</color>
     <color name="condition">#959595</color>
+    <color name="light_gray">#e0e0e0</color>
+    <color name="text_search">#7c7c7c</color>
+    <color name="color_theme">#34e0a1</color>
 </resources>
