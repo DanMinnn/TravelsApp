@@ -5,11 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -17,7 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.travel.data.manager.AuthPreferences
-import com.example.travel.presentation.HomePage
+import com.example.travel.presentation.main_screen.MainScreen
+import com.example.travel.presentation.main_screen.account_screen.AccountScreen
 import com.example.travel.presentation.nav_graph.Route
 import com.example.travel.presentation.sign_in_screen.forgot_password.ForgotPassword
 import com.example.travel.presentation.sign_in_screen.SignIn
@@ -77,8 +74,7 @@ fun NavGraphBuilder.travelsGraph(appState: TravelsAppState) {
         ForgotPassword(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
-    composable(Route.HomePage.route) {
-        HomePage(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    composable(Route.MainScreen.route) {
+        MainScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
-
 }

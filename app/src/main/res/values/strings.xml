@@ -8,6 +8,7 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
+    <string name="sign_out">Sign out</string>
     <string name="default_web_client_id">346003682345-d0qsu82e5fv943g9as4u4b0f3jk8p54n.apps.googleusercontent.com</string>
     <string name="email_empty_error">"Please enter a valid email address."</string>
     <string name="email_invalid_error">Invalid email format</string>

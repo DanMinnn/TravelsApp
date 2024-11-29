@@ -12,4 +12,5 @@
     <color name="light_gray">#e0e0e0</color>
     <color name="text_search">#7c7c7c</color>
     <color name="color_theme">#34e0a1</color>
+    <color name="color_divider">#efefef</color>
 </resources>

@@ -88,7 +88,7 @@ class SignInViewModel @Inject constructor(
 
                 authPreferences.setUserLoggedIn(true)
 
-                openAndPopUp(Route.HomePage.route, Route.SignInEmailScreen.route)
+                openAndPopUp(Route.MainScreen.route, Route.SignInEmailScreen.route)
             } catch (ex: Exception) {
                 _errorSignIn.value = SignInEvents.showToast("Please check your email and password and try again")
             } finally {
@@ -103,7 +103,7 @@ class SignInViewModel @Inject constructor(
                 val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                 accountService.signInWithGoogle(googleIdTokenCredential.idToken)
                 authPreferences.setUserLoggedIn(true)
-                openAndPopUp(Route.HomePage.route, Route.SignInEmailScreen.route)
+                openAndPopUp(Route.MainScreen.route, Route.SignInEmailScreen.route)
             } else {
                 Log.e(ERROR_TAG, UNEXPECTED_CREDENTIAL)
             }

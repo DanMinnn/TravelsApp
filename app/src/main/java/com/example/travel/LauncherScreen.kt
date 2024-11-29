@@ -19,7 +19,7 @@ fun LauncherScreen(authPreferences: AuthPreferences, appState: TravelsAppState) 
 
     LaunchedEffect(isUserLoggedIn) {
         if (isUserLoggedIn) {
-            appState.navigate(Route.HomePage.route)
+            appState.navigate(Route.MainScreen.route)
         } else {
             appState.navigate(Route.SignIn.route)
         }

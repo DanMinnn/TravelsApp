@@ -8,5 +8,6 @@ sealed class Route(
     object SignInEmailScreen : Route(route = "signInEmail")
     object SignUp : Route(route = "signUp")
     object ForgotPassword : Route(route = "forgotPassword")
-    object HomePage : Route(route = "homePage")
+    object MainScreen : Route(route = "mainScreen")
+    object AccountScreen : Route(route = "accountScreen")
 }
