@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.travel.R
+import com.example.travel.presentation.common.CommonButton
 import com.example.travel.presentation.nav_graph.Route
 
 @Composable
@@ -186,19 +187,10 @@ fun SignInEmail(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
+        CommonButton(
             onClick = { viewModel.onSignUpClick(openAndPopUp) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(45.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
-            border = BorderStroke(1.dp, color = Color.Black)
-        ) {
-            Text(stringResource(id = R.string.sign_up))
-        }
+            text = stringResource(R.string.sign_up),
+        )
     }
 
     LaunchedEffect(key1 = errorSignIn) {

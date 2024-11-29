@@ -35,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.travel.R
+import com.example.travel.presentation.common.CommonButton
+
 @Composable
 fun AccountScreen(
 ){
@@ -106,19 +108,11 @@ fun AccountScreen(
         HorizontalDivider(thickness = 1.dp, color = colorResource(R.color.color_divider))
 
         Spacer(modifier = Modifier.height(20.dp))
-        Button(
+        
+        CommonButton(
             onClick = { },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(45.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
-            border = BorderStroke(1.dp, color = Color.Black)
-        ) {
-            Text(stringResource(id = R.string.sign_out))
-        }
+            text = stringResource(R.string.sign_out),
+        )
     }
 }
 
