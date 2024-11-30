@@ -13,12 +13,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CommonButton(
+    modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit
 ){
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(45.dp),
         colors = ButtonDefaults.buttonColors(
