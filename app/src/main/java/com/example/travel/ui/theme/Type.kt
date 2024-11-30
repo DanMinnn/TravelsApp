@@ -35,10 +35,32 @@ val Typography = Typography(
     */
 )
 
+
+
 val tripsansFontFamily = FontFamily(
     Font(R.font.tripsans_ultra, FontWeight.Black)
 )
 
 val tripsansRegularFontFamily = FontFamily(
     Font(R.font.tripsans_regular, FontWeight.Black)
+)
+
+val mercenary_medium = FontFamily(
+    Font(R.font.mercenary_medium)
+)
+
+val mercenary_bold = FontFamily(
+    Font(R.font.mercenary_bold)
+)
+
+val tt_commons_pro_demi_bold = FontFamily(
+    Font(R.font.tt_commons_pro_demibold)
+)
+
+val geometric_semibold = FontFamily(
+    Font(R.font.geometric_semibold)
+)
+
+val geometric_medium = FontFamily(
+    Font(R.font.geometric_medium)
 )

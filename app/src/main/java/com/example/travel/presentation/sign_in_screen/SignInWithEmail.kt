@@ -190,6 +190,7 @@ fun SignInEmail(
         CommonButton(
             onClick = { viewModel.onSignUpClick(openAndPopUp) },
             text = stringResource(R.string.sign_up),
+            modifier = modifier
         )
     }
 

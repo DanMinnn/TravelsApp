@@ -42,12 +42,13 @@ fun AccountScreen(
 ){
     Column(
         modifier = Modifier.fillMaxSize()
-            .padding(40.dp)
+            .fillMaxSize()
             .background(color = Color.White)
     ) {
+        Spacer(modifier = Modifier.height(30.dp))
         Row(
             modifier = Modifier.fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 40.dp)
         ) {
             Text(
                 text = "Account",
@@ -58,7 +59,7 @@ fun AccountScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.width(170.dp))
+            Spacer(modifier = Modifier.width(220.dp))
 
             Image(
                 painter = painterResource(R.drawable.logo),
@@ -77,41 +78,37 @@ fun AccountScreen(
             text = "Profile",
             onClick = {}
         )
-        HorizontalDivider(thickness = 1.dp, color = colorResource(R.color.color_divider))
 
         CommonListItem(
             icon = R.drawable.bookings,
             text = "Bookings",
             onClick = {}
         )
-        HorizontalDivider(thickness = 1.dp, color = colorResource(R.color.color_divider))
 
         CommonListItem(
             icon = R.drawable.notifications,
             text = "Notifications",
             onClick = {}
         )
-        HorizontalDivider(thickness = 1.dp, color = colorResource(R.color.color_divider))
 
         CommonListItem(
             icon = R.drawable.preferences,
             text = "Preferences",
             onClick = {}
         )
-        HorizontalDivider(thickness = 1.dp, color = colorResource(R.color.color_divider))
 
         CommonListItem(
             icon = R.drawable.support,
             text = "Support",
             onClick = {}
         )
-        HorizontalDivider(thickness = 1.dp, color = colorResource(R.color.color_divider))
 
         Spacer(modifier = Modifier.height(20.dp))
         
         CommonButton(
             onClick = { },
             text = stringResource(R.string.sign_out),
+            modifier = Modifier.padding(horizontal = 40.dp)
         )
     }
 }

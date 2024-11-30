@@ -60,6 +60,9 @@ import com.example.travel.R
 import com.example.travel.data.model.Adventure
 import com.example.travel.data.model.sampleAdventureList
 import com.example.travel.data.model.sampleTrendingList
+import com.example.travel.presentation.common.ImageCard
+import com.example.travel.presentation.common.SearchBar
+import com.example.travel.ui.theme.AppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -70,17 +73,42 @@ fun HomeScreen(
         modifier = Modifier
             .background(color = Color.White)
             .fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp)
+
     ) {
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(painter = painterResource(R.drawable.logo), contentDescription = null)
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = "OwlAdvisor",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         stickyHeader {
-           Box(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .background(color = Color.White)
-                   .padding(vertical = 8.dp)
-           ){
-               SearchBar()
-           }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Color.White)
+                    .padding(vertical = 8.dp)
+            ) {
+                SearchBar()
+            }
         }
 
         item {
@@ -101,47 +129,6 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-}
-
-@Composable
-fun SearchBar() {
-    TextField(
-        value = "",
-        onValueChange = {},
-        placeholder = {
-            Text(
-                stringResource(R.string.search),
-                style = TextStyle(fontSize = 12.sp, textAlign = TextAlign.Center)
-            )
-        },
-        leadingIcon = {
-            Icon(
-                Icons.Default.Search,
-                contentDescription = null,
-                tint = Color.Black,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(20.dp)
-            )
-        },
-        shape = RoundedCornerShape(30.dp),
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedContainerColor = Color.Transparent
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(45.dp)
-            .padding(horizontal = 12.dp)
-            .border(
-                width = 1.dp,
-                color = colorResource(R.color.light_gray),
-                shape = RoundedCornerShape(30.dp)
-            )
-
-    )
 }
 
 @Composable
@@ -171,10 +158,8 @@ fun NearbySection() {
             modifier = Modifier.padding(8.dp)
         ) {
             Text(
-                text = "Looking for something nearby?", style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp
-                )
+                text = "Looking for something nearby?",
+                style = AppTheme.appTypography.titleSmall.copy(fontSize = 15.sp),
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -202,16 +187,15 @@ fun NearbySection() {
 
 @Composable
 fun AdventureSection() {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column() {
         Text(
-            "Plan your next adventure", style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            ), modifier = Modifier.padding(start = 16.dp)
+            "Plan your next adventure",
+            style = AppTheme.appTypography.heading1,
+            modifier = Modifier.padding(start = 40.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 12.dp)
+            contentPadding = PaddingValues(horizontal = 40.dp)
         ) {
             items(sampleAdventureList) { adventure ->
                 AdventureCard(adventure)
@@ -222,175 +206,67 @@ fun AdventureSection() {
 
 @Composable
 fun AdventureCard(adventure: Adventure) {
-    Card(
-        modifier = Modifier
-            .width(250.dp)
-            .padding(end = 8.dp)
-            .clickable { /* Navigate to details */ },
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Box {
-            // Background image
-            Image(
-                painter = painterResource(id = adventure.imageRes),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp),
-                contentScale = ContentScale.Crop
-            )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black
-                            ), startY = 250f
-                        )
-                    )
-            )
+    ImageCard(
+        imageRes = adventure.imageRes,
+        title = adventure.title,
+        subtitle = adventure.location,
+        isOverlayEnabled = true,
+        onClick = {}
+    )
 
-            // Overlay for text and icon
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Black,
-                                Color.Transparent
-                            ), startY = 300f
-                        )
-                    )
-                    .padding(8.dp),
-                contentAlignment = Alignment.BottomStart
-            ) {
-                Column(
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Text(
-                        text = adventure.title,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            fontSize = 18.sp
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = adventure.location,
-                        style = TextStyle(
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White,
-                            fontSize = 12.sp
-                        ),
-                        maxLines = 1
-                    )
-                }
-            }
-
-            // Favorite icon
-            Icon(
-                painterResource(R.drawable.heart_outline_ic_bottom),
-                contentDescription = "Favorite",
-                tint = Color.Black,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .background(
-                        color = Color.White, shape = CircleShape
-                    )
-                    .align(Alignment.TopEnd)
-                    .padding(6.dp)
-                    .clickable {
-
-                    }
-            )
-        }
-
-    }
 }
 
 @Composable
 fun TrendingCard(adventure: Adventure) {
 
     Column(modifier = Modifier.padding(end = 8.dp)) {
-        Box(
+
+        ImageCard(
+            imageRes = adventure.imageRes,
+            title = adventure.title,
+            subtitle = adventure.location,
+            isOverlayEnabled = false,
+            onClick = {},
             modifier = Modifier
-                .width(150.dp)
+                .width(180.dp)
+                .height(240.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .border(width = 0.dp, color = Color.Transparent, shape = RoundedCornerShape(12.dp))
-        ) {
+        )
 
-            Image(
-                painter = painterResource(id = adventure.imageRes),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            Icon(
-                painterResource(R.drawable.heart_outline_ic_bottom),
-                contentDescription = "Favorite",
-                tint = Color.Black,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .background(
-                        color = Color.White, shape = CircleShape
-                    )
-                    .align(Alignment.TopEnd)
-                    .padding(6.dp)
-                    .clickable {
-
-                    }
-            )
-        }
 
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = adventure.title,
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                fontSize = 12.sp
-            ),
+            style = AppTheme.appTypography.titleSmall,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(start = 5.dp)
         )
 
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
             text = adventure.location,
-            style = TextStyle(
-                fontWeight = FontWeight.Normal,
-                color = Color.DarkGray,
-                fontSize = 10.sp
-            ),
+            style = AppTheme.appTypography.subTitleSmall,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(start = 5.dp)
         )
     }
 }
 
 @Composable
 fun TrendingSection() {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column() {
         Text(
-            "Trending with travelers", style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            ), modifier = Modifier.padding(start = 16.dp)
+            "Trending with travelers",
+            style = AppTheme.appTypography.heading1,
+            modifier = Modifier.padding(start = 40.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        LazyRow(contentPadding = PaddingValues(horizontal = 12.dp)) {
+        LazyRow(contentPadding = PaddingValues(horizontal = 40.dp)) {
             items(sampleTrendingList) { trending ->
                 TrendingCard(trending)
             }
@@ -400,63 +276,20 @@ fun TrendingSection() {
 
 @Composable
 fun BestOfBest() {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column() {
         Text(
-            "Trending with travelers", style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            ), modifier = Modifier.padding(start = 16.dp)
+            "Trending with travelers",
+            style = AppTheme.appTypography.heading1,
+            modifier = Modifier.padding(start = 40.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        LazyRow(contentPadding = PaddingValues(horizontal = 12.dp)) {
+        LazyRow(contentPadding = PaddingValues(horizontal = 40.dp)) {
             items(sampleTrendingList) { trending ->
                 TrendingCard(trending)
             }
         }
     }
 }
-
-/*@Composable
-fun BottomNavigationBar() {
-    BottomAppBar(
-        containerColor = Color.White,
-        contentColor = MaterialTheme.colorScheme.primary
-    ) {
-        NavigationBarItem(
-            selected = true,
-            onClick = { *//* Navigate to Home *//* },
-            icon = { Icon(painterResource(R.drawable.home), contentDescription = null) },
-            label = { Text("Home") }
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { *//* Navigate to Search *//* },
-            icon = { Icon(Icons.Default.Search, contentDescription = null) },
-            label = { Text("Search") }
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { *//* Navigate to Trips *//* },
-            icon = { Icon(painterResource(R.drawable.trip), contentDescription = null) },
-            label = { Text("Trips") }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = { *//* Navigate to Trips *//* },
-            icon = { Icon(painterResource(R.drawable.review), contentDescription = null) },
-            label = { Text("Review") }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = {
-            },
-            icon = { Icon(painterResource(R.drawable.account), contentDescription = null) },
-            label = { Text("Account") }
-        )
-    }
-}*/
 
 @Composable
 @Preview(showBackground = true, showSystemUi = true)

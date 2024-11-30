@@ -20,12 +20,13 @@ import com.example.travel.presentation.sign_in_screen.forgot_password.ForgotPass
 import com.example.travel.presentation.sign_in_screen.SignIn
 import com.example.travel.presentation.sign_in_screen.SignInEmail
 import com.example.travel.presentation.sign_up.SignUp
+import com.example.travel.ui.theme.AppTheme
 import com.example.travel.ui.theme.TravelTheme
 
 
 @Composable
 fun TravelsApp(authPreferences: AuthPreferences) {
-    TravelTheme {
+    AppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState(authPreferences = authPreferences)
 
