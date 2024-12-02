@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.travel.R
 import com.example.travel.presentation.common.CommonButton
+import com.example.travel.presentation.common.HeadingNavigation
 
 @Composable
 fun AccountScreen(
@@ -48,16 +49,10 @@ fun AccountScreen(
         Spacer(modifier = Modifier.height(30.dp))
         Row(
             modifier = Modifier.fillMaxWidth()
-                .padding(horizontal = 40.dp)
+                .padding(horizontal = 50.dp)
         ) {
-            Text(
-                text = "Account",
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp,
-                    textAlign = TextAlign.Center
-                )
-            )
+
+            HeadingNavigation("Account")
 
             Spacer(modifier = Modifier.width(220.dp))
 

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.example.travel.R
 import com.example.travel.data.model.Adventure
 import com.example.travel.data.model.sampleTrendingList
+import com.example.travel.presentation.common.HeadingNavigation
 import com.example.travel.presentation.common.ImageCard
 import com.example.travel.presentation.common.RecentViewed
 import com.example.travel.presentation.common.SearchBar
@@ -55,16 +56,7 @@ fun SearchScreen(
         item {
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                text = "Search",
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.padding(horizontal = 50.dp)
-            )
+            HeadingNavigation("Search")
 
             Spacer(modifier = Modifier.height(16.dp))
         }

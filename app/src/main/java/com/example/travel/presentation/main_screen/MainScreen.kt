@@ -32,6 +32,7 @@ import com.example.travel.R
 import com.example.travel.presentation.main_screen.account_screen.AccountScreen
 import com.example.travel.presentation.main_screen.hom_screen.HomeScreen
 import com.example.travel.presentation.main_screen.search_screen.SearchScreen
+import com.example.travel.presentation.main_screen.trip_screen.TripScreen
 import com.example.travel.presentation.nav_graph.BottomNavItemScreen
 
 @Composable
@@ -118,6 +119,10 @@ fun MainScreen(
 
             composable(route = BottomNavItemScreen.Search.route) {
                 SearchScreen()
+            }
+
+            composable(route = BottomNavItemScreen.Trip.route) {
+                TripScreen()
             }
 
             composable(route = BottomNavItemScreen.Account.route) {
